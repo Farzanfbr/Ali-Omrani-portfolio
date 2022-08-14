@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hero1 {
+  font-family: "Lato";
+}
+
+.indicator {
+  width: calc(100% - 15%);
+  margin-left: calc(100% - 85%);
+  height: 48px;
+}
+
+.table--data {
+  max-width: 15% !important;
+}
