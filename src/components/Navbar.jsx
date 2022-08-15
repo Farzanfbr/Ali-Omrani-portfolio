@@ -3,17 +3,28 @@ import Socials from "./nav-Comp/Socials";
 import { Link } from "react-scroll";
 import { VscMenu, VscChromeClose } from "react-icons/vsc";
 import { useState } from "react";
+import { useEffect } from "react";
 
 function Navbar({ active, onClick, Menus }) {
   const [nav, setNav] = useState(false);
   const handleNav = () => setNav(!nav);
-
+  useEffect(() => {
+    if (nav === true) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [nav]);
+  const handleCLick = (i) => {
+    onClick(i);
+    setNav(false);
+  };
   return (
     <div className=" lg:w-[20%] lg:fixed bg-primary h-screen">
       {/* mobile menu */}
       <div className="lg:hidden absolute pl-4 pt-4 z-20">
         <label class="btn btn-circle bg-primary hover:bg-primary swap swap-rotate ring-1 ring-white">
-          <input type="checkbox" onClick={handleNav} />
+          <input type="checkbox" onClick={handleNav} checked={nav} />
           <VscMenu className="swap-off fill-white w-6 h-6" />
           <VscChromeClose className="swap-on fill-white w-6 h-6" />
         </label>
@@ -21,25 +32,27 @@ function Navbar({ active, onClick, Menus }) {
       <ul
         className={
           !nav
-            ? "hidden"
-            : "lg:hidden text-white bg-primary absolute w-full h-screen top-0 left-0 flex flex-col justify-center items-center z-10"
+            ? "lg:hidden translate-y-full text-white bg-primary fixed duration-500 w-full h-screen top-0 left-0 flex flex-col justify-center items-center px-auto z-10"
+            : "lg:hidden translate-y-0 text-white bg-primary fixed duration-500 w-full h-screen top-0 left-0 flex flex-col justify-center items-center px-auto z-10"
         }
       >
-        {Menus.map((menu, i) => (
-          <Link
-            to={menu.name}
-            smooth={true}
-            duration={700}
-            onClick={() => onClick(i)}
-          >
-            <li key={i} className="py-7 cursor-pointer">
-              <span className="text-2xl pr-4">
-                <ion-icon name={menu.icon}></ion-icon>
-              </span>
-              <span className="text-2xl">{" " + menu.name}</span>
-            </li>
-          </Link>
-        ))}
+        <div>
+          {Menus.map((menu, i) => (
+            <Link
+              to={menu.name}
+              smooth={true}
+              duration={700}
+              onClick={() => handleCLick(i)}
+            >
+              <li key={i} className="py-7 cursor-pointer">
+                <span className="text-2xl pr-4">
+                  <ion-icon name={menu.icon}></ion-icon>
+                </span>
+                <span className="text-2xl">{" " + menu.name}</span>
+              </li>
+            </Link>
+          ))}
+        </div>
       </ul>
       <Avatar />
       <Socials />
